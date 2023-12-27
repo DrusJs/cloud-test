@@ -1,0 +1,14 @@
+$grid-breakpoints: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$grid-breakpoints: map-merge(
+  (
+    xs: 0,
+    sm: 575px,
+    md: 767px,
+    lg: 991px,
+    xl: 1141px,
+    xlp: 1570px
+  ),
+  $grid-breakpoints
+);
+
