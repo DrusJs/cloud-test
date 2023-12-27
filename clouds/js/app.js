@@ -133,9 +133,9 @@ document.addEventListener("DOMContentLoaded", function() {
             showTariffsBtn.style.display = 'none';
         }
         //new
-        //увеличение цены при нажатии на выбор тарифа
+        //увеличение цены при нажатии на тариф
         productItems.forEach(el=>{
-            el.querySelector('.btn_wrapper .btn').addEventListener('click', (event)=> {
+            el.addEventListener('click', (event)=> {
                 if (el.closest('.tab-pane').querySelector('.js-active-product')) { 
                     el.closest('.tab-pane').querySelector('.js-active-product').classList.remove('js-active-product')
                     event.currentTarget.closest('.product_item').classList.add('js-active-product')                    
@@ -149,32 +149,42 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     //new
+    function clickRadio(el) {
+        var siblings = document.querySelectorAll("input[type='radio'][name='" + el.name + "']");
+        for (var i = 0; i < siblings.length; i++) {
+          if (siblings[i] != el)
+            siblings[i].oldChecked = false;
+        }
+        if (el.oldChecked) {
+            clearRecomends()
+            el.checked = false
+        }         
+        el.oldChecked = el.checked;
+        el.checked = false
+    }
     //поиск нажатой функции среди конфига тарифов и установка рекомендаций
     const filterButtons = document.querySelectorAll('.form_radio_btn')
     filterButtons.forEach(el=>{
-        el.addEventListener('click', function() {
-            let type = this.querySelector('input').value.trim()
-            let id = this.querySelector('input').id
-            console.log(type, );
+        el.querySelector('label').addEventListener('click', function(event) {
+            let type = event.currentTarget.previousElementSibling.value.trim()
+            let id = event.currentTarget.previousElementSibling.id
             if (isSilver(this)) {
                 let config = configRadioSilver.find(item => item.name == type)
-                console.log(config, configRadioSilver);
-                if (config) { setRecomends(config.recomends); return }
+                if (config) { setRecomends(config.recomends, false, '', event.currentTarget.previousElementSibling); return }
                 else { config = configRadioGold.find(item => item.name == type) }
-                if (config) { setRecomends(config.recomends, 2, id[id.length-1]) }
+                if (config) { setRecomends(config.recomends, 2, id[id.length-1], event.currentTarget.previousElementSibling) }
             } else {
                 let config = configRadioGold.find(item => item.name == type)
-                console.log(config);
-                if (config) { setRecomends(config.recomends); return }
+                if (config) { setRecomends(config.recomends, false, '', event.currentTarget.previousElementSibling); return }
                 else { config = configRadioSilver.find(item => item.name == type) }
-                if (config) { setRecomends(config.recomends, 1, id[id.length-1]) }
+                if (config) { setRecomends(config.recomends, 1, id[id.length-1], event.currentTarget.previousElementSibling) }
             }
         })
     })
     
     //config - ['X2:более 15', 'X4:более 15', 'X6:более 15', 'X8:более 15']
     //функция установки рекомендайций в соответствии с конфигом
-    function setRecomends(config, isChange=false, id='') {        
+    function setRecomends(config, isChange=false, id='', param) {        
         if (isChange) {document.querySelectorAll('.nav-tabs .nav-item')[isChange-1].firstElementChild.click()}
         clearRecomends()
         let activeTab = document.querySelector('.tab-pane.active')
@@ -190,20 +200,22 @@ document.addEventListener("DOMContentLoaded", function() {
                 prod.querySelector('.product_item__top span').classList.add('none')
             }
         })
-        activeTab.querySelectorAll('.product_item').forEach(el=>{
-            if (!el.classList.contains('product_item__active')) {
-                el.classList.add('none')
-            }
-        })
+        clickRadio(param)
+        // activeTab.querySelectorAll('.product_item').forEach(el=>{
+        //     if (!el.classList.contains('product_item__active')) {
+        //         el.classList.add('none')
+        //     }
+        // })
     }
+
     //очистка всех полей тарифа от изменений
     function clearRecomends() {
         document.querySelectorAll('.product_item__active').forEach(el=>{
             el.classList.remove('product_item__active')
         })
-        document.querySelectorAll('.product_item.none').forEach(el=>{
-            el.classList.remove('none')
-        })
+        // document.querySelectorAll('.product_item.none').forEach(el=>{
+        //     el.classList.remove('none')
+        // })
         document.querySelectorAll('.product_item__top span.none').forEach(el=>{
             el.classList.remove('none')
         })
