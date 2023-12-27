@@ -205,12 +205,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 prod.querySelector('.product_item__top span').classList.add('none')
             }
         })
-        clickRadio(param)
         activeTab.querySelectorAll('.product_item').forEach(el=>{
             if (!el.classList.contains('product_item__active')) {
                 el.classList.add('none')
             }
         })
+        clickRadio(param)
     }
 
     //очистка всех полей тарифа от изменений
