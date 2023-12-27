@@ -93,11 +93,11 @@ $( document ).ready(function() {
 document.addEventListener("DOMContentLoaded", function() {
     const productWrappers = document.querySelectorAll('.product_wrapper');
     const totalCost = document.querySelectorAll('.js-total')
-    const SILVER_INC = 1999, GOLD_INC = 1999 //инкремент цены для тарифов Silver и Gold
+    let SILVER_INC = 0, GOLD_INC = 0 //инкремент цены для тарифов Silver и Gold
     
     function changeTotalCost(value, el) {
-            let num = el.innerHTML.replaceAll('₽', '')
-            el.innerHTML = +num + value
+            let num = el.innerHTML.replaceAll('₽', '').trim()
+            el.innerHTML = +num + +value
             el.innerHTML += ' ₽'
     }
     
@@ -137,13 +137,18 @@ document.addEventListener("DOMContentLoaded", function() {
         productItems.forEach(el=>{
             el.addEventListener('click', (event)=> {
                 if (el.closest('.tab-pane').querySelector('.js-active-product')) { 
-                    el.closest('.tab-pane').querySelector('.js-active-product').classList.remove('js-active-product')
-                    event.currentTarget.closest('.product_item').classList.add('js-active-product')                    
-                } else { 
-                    event.currentTarget.closest('.product_item').classList.add('js-active-product')
-                    changeTotalCost(isSilver(el)?SILVER_INC:GOLD_INC, isSilver(el)?totalCost[0]:totalCost[1])
+                    el.closest('.tab-pane').querySelector('.js-active-product').classList.remove('js-active-product')                  
                 }
-                
+                    event.currentTarget.closest('.product_item').classList.add('js-active-product')
+                    changeTotalCost(isSilver(el)?-SILVER_INC:-GOLD_INC, isSilver(el)?totalCost[0]:totalCost[1])
+                    var temp = el.querySelector('.price').textContent.trim()
+                    if (isSilver(el)) {
+                        SILVER_INC = temp.split('₽')[0].replaceAll(' ', '')
+                    } else {
+                        GOLD_INC = temp.split('₽')[0].replaceAll(' ', '')
+                    }
+                    console.log(SILVER_INC);
+                    changeTotalCost(isSilver(el)?SILVER_INC:GOLD_INC, isSilver(el)?totalCost[0]:totalCost[1])                
             })
         })
     });
@@ -201,11 +206,11 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         })
         clickRadio(param)
-        // activeTab.querySelectorAll('.product_item').forEach(el=>{
-        //     if (!el.classList.contains('product_item__active')) {
-        //         el.classList.add('none')
-        //     }
-        // })
+        activeTab.querySelectorAll('.product_item').forEach(el=>{
+            if (!el.classList.contains('product_item__active')) {
+                el.classList.add('none')
+            }
+        })
     }
 
     //очистка всех полей тарифа от изменений
@@ -213,9 +218,9 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll('.product_item__active').forEach(el=>{
             el.classList.remove('product_item__active')
         })
-        // document.querySelectorAll('.product_item.none').forEach(el=>{
-        //     el.classList.remove('none')
-        // })
+        document.querySelectorAll('.product_item.none').forEach(el=>{
+            el.classList.remove('none')
+        })
         document.querySelectorAll('.product_item__top span.none').forEach(el=>{
             el.classList.remove('none')
         })
