@@ -1029,7 +1029,14 @@ header .container .header_right .phone:hover:after {
 }
 .product_items.hide .row {
   overflow: hidden;
-  height: 564px;
+  height: 677px;
+}
+
+@media (max-width: 1570px) {
+  .product_items.hide .row {
+    overflow: hidden;
+    height: 564px;
+  }
 }
 @media (max-width: 555px) {
   .product_items.hide .row {
