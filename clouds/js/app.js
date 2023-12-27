@@ -112,20 +112,12 @@ document.addEventListener("DOMContentLoaded", function() {
         const maxVisibleItems = 3;
 
         if (productItems.length > maxVisibleItems) {
-            for (let i = maxVisibleItems; i < productItems.length; i++) {
-                productItems[i].style.display = 'none';
-            }
-
             showTariffsBtn.style.display = 'block';
 
             let isHidden = true;
             showTariffsBtn.addEventListener('click', function(event) {
                 event.preventDefault();
-
-                for (let i = maxVisibleItems; i < productItems.length; i++) {
-                    productItems[i].style.display = isHidden ? 'block' : 'none';
-                }
-
+                event.currentTarget.closest('.product_items').classList.toggle('hide')
                 showTariffsBtn.textContent = isHidden ? 'Скрыть тарифы' : 'Показать все тарифы';
                 isHidden = !isHidden;
             });

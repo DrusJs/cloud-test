@@ -1027,6 +1027,16 @@ header .container .header_right .phone:hover:after {
 .product_wrapper .product_left .product_items .row {
   margin: -10px;
 }
+.product_items.hide .row {
+  overflow: hidden;
+  height: 564px;
+}
+@media (max-width: 555px) {
+  .product_items.hide .row {
+    overflow: hidden;
+    height: 1639px;
+  }
+}
 .product_wrapper .product_left .product_items .row [class*=col-] {
   padding: 10px;
 }
