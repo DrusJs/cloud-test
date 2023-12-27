@@ -2128,7 +2128,9 @@ header .container .header_right .phone:hover:after {
 }
 .reviews-slide {
   position: relative;
+  padding-right: 540px;
 }
+
 .reviews-name {
   font-size: 14px;
   font-style: normal;
@@ -2232,6 +2234,31 @@ header .container .header_right .phone:hover:after {
 .product_wrapper .product_left .product_items .col-12:has(.product_item.none) {
   display: none !important;
 }
+
+@media (max-width: 1200px) {
+  .reviews-slide {
+    padding-right: 0;
+  }
+  .review-img-container {
+    display: none;
+  }
+  .pagination {
+    top: 30px;
+    left: calc(50% - 80px);
+  }
+  .reviews_wrapper {
+    padding: 30px 0px;
+    padding-bottom: 50px;
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .reviews-slide .btn {
+    max-width: 100%;
+  }
+}
+
 
 /*new*/
 
